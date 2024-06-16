@@ -16,12 +16,18 @@ data = pd.read_csv('./AQbench_dataset.csv')
 
 #preprocess data
 X_train, X_val, X_test, y_train, y_val, y_test = processing.process(data)
+lr_all_targets = False
+target_index = 0
+
+print("Avalable targets:", y_test.columns)
 
 print("------------ Linear Regression ------------")
-model_lr = linearregression.model(X_train, y_train)
-evaluate.metrics(X_val, y_val, X_train, y_train, model_lr)
+if(lr_all_targets):
+    linearregression.model(X_train, y_train, X_val, y_val, X_test, y_test, lr_all_targets)
+else:
+    linearregression.model(X_train, y_train.iloc[:,target_index], X_val, y_val.iloc[:,target_index], X_test, y_test.iloc[:,target_index],  lr_all_targets)
 print("------------ Neural Network ------------")
-model_nn = neuralnetwork.model(X_train, y_train.iloc[:,0], X_val, y_val.iloc[:,0])
+neuralnetwork.model(X_train, y_train.iloc[:,target_index], X_val, y_val.iloc[:,target_index], X_test, y_test.iloc[:,target_index])
 
 
 # plotOnMap.plot(data)
