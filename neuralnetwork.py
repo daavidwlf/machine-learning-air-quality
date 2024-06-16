@@ -3,19 +3,28 @@ from keras.layers import *
 from keras.optimizers import *
 import tensorflow as tf
 from sklearn.metrics import r2_score
+import matplotlib.pyplot as plt
 
 def model(X_train, y_train, X_valid, y_valid):
-    ln = Sequential([Dense(1, input_shape=(133,), activation='linear')])
-    ln.summary()
+    nn = Sequential([
+        Input(shape=(133,)),
+        Dense(20, activation='relu'),
+        Dense(5, activation='relu'),
+        Dense(1, activation='relu')
+    ])
+    nn.summary()
 
-    ln.compile(optimizer = tf.keras.optimizers.Adam(1e-1), loss = 'mse')
+    nn.compile(optimizer = tf.keras.optimizers.Adam(0.0001), loss = 'mse')
 
-    ln.fit(X_train, y_train, batch_size = 10000, epochs=12, validation_data=(X_valid, y_valid))
+    nn.fit(X_train, y_train, batch_size = 32, epochs=250, validation_data=(X_valid, y_valid))
+
+    plt.plot(nn.history.history['loss'][1:], label='Training loss')
+    plt.plot(nn.history.history['val_loss'][1:], label='Validation loss')
 
     def print_scores(m, X_train=X_train, X_valid=X_valid):
-        preds = m.predict(X_valid, 10000)
-        print('Train R2 = ', r2_score(y_train, m.predict(X_train, 10000)), 
+        preds = m.predict(X_valid)
+        print('Train R2 = ', r2_score(y_train, m.predict(X_train)), 
             ', Valid R2 = ', r2_score(y_valid, preds), ', Valid MSE = ', 
-            m.evaluate(X_valid, y_valid, 10000, 0))
+            m.evaluate(X_valid, y_valid))
     
-    print_scores(ln)
+    print_scores(nn)
