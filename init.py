@@ -6,8 +6,9 @@ import tensorflow as tf
 
 import plotOnMap
 import processing
-import linearRegression
+import linearregression
 import evaluate
+import neuralnetwork
 
 data = pd.read_csv('./AQbench_dataset.csv')
 
@@ -16,10 +17,11 @@ data = pd.read_csv('./AQbench_dataset.csv')
 #preprocess data
 X_train, X_val, X_test, y_train, y_val, y_test = processing.process(data)
 
-model_lr = linearRegression.linear_regression(X_train, y_train)
-
 print("------------ Linear Regression ------------")
+model_lr = linearregression.model(X_train, y_train)
 evaluate.metrics(X_val, y_val, X_train, y_train, model_lr)
+print("------------ Neural Network ------------")
+model_nn = neuralnetwork.model(X_train, y_train.iloc[:,0], X_val, y_val.iloc[:,0])
 
 
 # plotOnMap.plot(data)
