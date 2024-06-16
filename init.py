@@ -16,7 +16,7 @@ data = pd.read_csv('./AQbench_dataset.csv')
 
 #preprocess data
 X_train, X_val, X_test, y_train, y_val, y_test = processing.process(data)
-lr_all_targets = False
+lr_all_targets = True
 target_index = 0
 
 print("Avalable targets:", y_test.columns)

@@ -16,7 +16,7 @@ def calcMSE(model, X_train, y_train, X_valid, y_valid, X_test, y_test, all_targe
     
     if(all_targets):
         print('Train MSE = ', mean_squared_error(y_train, pred_train, multioutput='raw_values'))
-        print('Valdi MSE = ', mean_squared_error(y_valid, y_valid, multioutput='raw_values'))
+        print('Valdi MSE = ', mean_squared_error(y_valid, pred_valid, multioutput='raw_values'))
         print('Test MSE = ', mean_squared_error(y_test,  pred_test, multioutput='raw_values'))
      
 
